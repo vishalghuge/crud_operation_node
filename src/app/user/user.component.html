@@ -1,0 +1,83 @@
+<button type="button"  class="btn btn-primary" (click)="isadd ? isadd = false : isadd = true;reset()">{{isadd === true ? 'List User' : 'Add User'}}</button>
+<div class="container mt-3"  *ngIf="!isadd">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <td>First Name</td>
+          <td>Last Name</td>
+          <td>Email</td>
+          <td>Phone</td>
+          <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor = "let item of userlist ">
+            <td> {{item.fname}}</td>
+            <td> {{item.lname}}</td>
+            <td> {{item.email}}</td>
+            <td> {{item.phone}}</td>
+            <td><button type="button" class="btn btn-primary" (click)="edit(item)">Edit</button> &nbsp;&nbsp;
+              <button type="button" class="btn btn-primary" (click)="delete(item)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+
+
+<div class="container" *ngIf="isadd">
+  <form class="example-form" #form="ngForm" (ngSubmit)="onSubmit(form,userinfo)">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="exampleInputEmail1">First Name</label>
+        <input type="text" class="form-control"  #fname="ngModel" name="fname" [(ngModel)]="userinfo.fname" pattern="[a-zA-Z ]*" required>
+        <div *ngIf="fname.touched && fname.errors?.required">First name required!</div>
+        <div *ngIf="fname.touched && fname.errors?.pattern">Alphabets Only!</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Last Name</label>
+        <input type="text" class="form-control" name="lname" #lname="ngModel" [(ngModel)]="userinfo.lname" pattern="[a-zA-Z ]*" required>
+        <div *ngIf="lname.touched && lname.errors?.required">Last name required!</div>
+        <div *ngIf="lname.touched && lname.errors?.pattern">Alphabets Only!</div>
+        
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email </label>
+        <input type="email" class="form-control" #email="ngModel" required name="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [(ngModel)]="userinfo.email" required>
+        <div *ngIf="email.touched && email.errors?.required">Email required!</div>
+        <div *ngIf="email.touched && email.errors?.pattern">Valid Email Only!</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Phone </label>
+        <input type="text" class="form-control" #phone="ngModel" name="phone" [(ngModel)]="userinfo.phone" pattern="^((\\+91-?)|0)?[0-9]{10}" maxlength="10" required>
+        <div *ngIf="phone.touched && phone.errors?.required">Mobile required!</div>
+        <div *ngIf="phone.touched && phone.errors?.maxlength"> 10 digits </div>
+        <div *ngIf="phone.touched && phone.errors?.pattern">Number Allowed</div>
+        
+      </div>
+    </div>
+    
+  </div>
+  <div class="row">
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-primary" (click)="reset()">Clear</button>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-m4-4">
+      <input class="file-upload" #uploader2 type="file" (change)="uploadprofile($event)" accept="image/*"/>
+      <img src={{imagepath}} width="300px" height="300px">
+  </div>
+  </div>
+</form>
+</div>
